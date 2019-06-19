@@ -4,7 +4,7 @@ import json
 #import datetime
 #currentDT = datetime.datetime.now()
 
-def to_used(my_price):
+def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
 
@@ -20,11 +20,17 @@ response = requests.get(request_url)
 parsed_response = json.loads(response.text)
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
-latest_day = "2019-02-20"
-latest_close = parsed_response["Time Series (Daily)"][latest_day]["4. close"]
+
+#breakpoint
+
+tsd = parsed_response["Time Series (Daily)"]
+dates = list(tsd.keys())
+
+latest_day = dates[0]
+latest_close = tsd[latest_day]["4. close"]
 
 
-breakpoint()
+
 
 
 
@@ -36,7 +42,7 @@ print("REQUESTING STOCK MARKET DATA...")
 #print("REQUEST AT: " + str(currentDT.strftime("%Y-%m-%d %H:%M:%S")))
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
-print(f"LATEST CLOSE: {to_used(float(latest_close))}")
+print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print("RECENT HIGH: $101,000.00")
 print("RECENT LOW: $99,000.00")
 print("-------------------------")
