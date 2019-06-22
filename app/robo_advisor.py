@@ -19,7 +19,9 @@ def to_usd(my_price):
 #
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
 #print(api_key)
-symbol = "MSFT" #TODO:accept user input
+symbol = input("ENTER STOCK TICKER: ")
+
+ #TODO:accept user input
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 response = requests.get(request_url)
 #print(type(response))  #class requests.models.response
@@ -73,10 +75,19 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             "volume": daily_prices["5. volume"],
             })
 
+#if recommendation:
+#    float(latest_close) > 1.2*(recent_low):
+#    print("BUY!")
+#else:
+#    print("DON'T BUY!")
 
+recommendation = "MAYBE BUY?"
+reason = "NO GOOD REASON"
 
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+
+print(f"SELECTED SYMBOL: {symbol}")
+
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT: " + str(currentDT))
@@ -86,8 +97,21 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO")
+
+if recommendation:
+    float(latest_close) > 1.2*(recent_low)
+    print("RECOMMENDATION: BUY!")
+else:
+    print("RECOMMENDATION: DON'T BUY!")
+
+if reason:
+    float(latest_close) > 1.2*(recent_low)
+    print("REASON: STOCK CLOSED MORE THAN 20% ABOVE RECENT LOW")
+else:
+    print("REASON: STOCK CLOSED LESS THAN 20% ABOVE RECENT LOW")
+
+print(f"RECOMMENDATION REASON: {reason}")
+
 print("-------------------------")
 print(f"WRITING DATA TO CSV: {csv_file_path}...")
 print("-------------------------")
