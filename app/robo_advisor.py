@@ -1,8 +1,9 @@
 # app/robo_advisor.py
+import csv
 import requests
 import json
-#import datetime
-#currentDT = datetime.datetime.now()
+import datetime
+currentDT = datetime.datetime.now()
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
@@ -46,14 +47,11 @@ recent_high = max(high_prices)
 recent_low = min(low_prices)
 
 
-
-
-
 print("-------------------------")
 print("SELECTED SYMBOL: XYZ")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
-#print("REQUEST AT: " + str(currentDT.strftime("%Y-%m-%d %H:%M:%S")))
+print("REQUEST AT: " + str(currentDT))
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
@@ -63,5 +61,18 @@ print("-------------------------")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO")
 print("-------------------------")
+print("WRITING DATA TO CSV...")
+print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
+
+
+csv_file_path = "data/prices.csv" # a relative filepath
+
+with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+    writer = csv.DictWriter(csv_file, fieldnames=["city", "name"])
+    writer.writeheader() # uses fieldnames set above
+    writer.writerow({"city": "New York", "name": "Yankees"})
+    writer.writerow({"city": "New York", "name": "Mets"})
+    writer.writerow({"city": "Boston", "name": "Red Sox"})
+    writer.writerow({"city": "New Haven", "name": "Ravens"})
